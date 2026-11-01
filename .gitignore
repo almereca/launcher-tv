@@ -1,0 +1,20 @@
+# Clés et réglages perso : jamais sur GitHub
+secrets.properties
+local.properties
+.tv-ip
+
+# Compilation
+.gradle/
+build/
+app/build/
+dist/
+derniere-compilation.log
+
+# Captures, articles et fichiers perso
+captures/
+Claude/
+ecran.png
+*.mp4
+
+# macOS
+.DS_Store

@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Télécommande">
+<meta name="theme-color" content="#000000">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="manifest" href="/manifest.webmanifest?s=__SID__">
+<link rel="stylesheet" href="/app.css">
+<title>Télécommande</title>
+</head>
+<body data-sid="__SID__">
+
+<!-- ================= Télécommande ================= -->
+<section class="view" id="v-remote">
+  <header class="bar">
+    <div>
+      <p class="eyebrow" id="tvStatus">Salon</p>
+      <h1>Télécommande</h1>
+    </div>
+    <button class="icon-btn" id="timerBtn" aria-label="Minuteur">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 2.5h4"/></svg>
+      <span class="badge" id="timerBadge" hidden></span>
+    </button>
+  </header>
+
+  <!-- Écrire sur la TV sans quitter la télécommande -->
+  <form class="typebar" id="typeForm" autocomplete="off">
+    <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M8 14h8"/></svg>
+    <input id="typeInput" type="search" enterkeyhint="search" placeholder="Écrire sur la TV" aria-label="Écrire sur la TV">
+    <span class="type-target" id="typeTarget"></span>
+  </form>
+
+  <!-- Raccourcis d'apps : une touche ouvre l'app sur la TV -->
+  <div class="shortcuts" id="shortcuts"></div>
+
+  <div class="pad" id="pad" role="application" aria-label="Pavé tactile : glisse pour naviguer, touche pour valider">
+    <span class="chev up"><svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5"/></svg></span>
+    <span class="chev down"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+    <span class="chev left"><svg viewBox="0 0 24 24"><path d="M14 7l-5 5 5 5"/></svg></span>
+    <span class="chev right"><svg viewBox="0 0 24 24"><path d="M10 7l5 5-5 5"/></svg></span>
+    <span class="dot" id="padDot"></span>
+    <p class="pad-hint">Glisse pour bouger · Touche pour valider</p>
+  </div>
+
+  <div class="controls">
+    <button class="round" data-k="back" aria-label="Retour"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button class="round" data-k="home" aria-label="Accueil"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/></svg></button>
+    <button class="round" data-k="playpause" aria-label="Lecture ou pause"><svg viewBox="0 0 24 24"><path d="M5 6l7 6-7 6z" class="fill"/><path d="M15 6v12M19 6v12"/></svg></button>
+    <div class="rocker" aria-label="Volume">
+      <button data-k="volup" data-repeat aria-label="Monter le volume"><svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>
+      <button data-k="mute" aria-label="Couper le son"><svg viewBox="0 0 24 24"><path d="M4 10h3l5-4v12l-5-4H4z" class="fill"/><path d="M16 9l5 6M21 9l-5 6"/></svg></button>
+      <button data-k="voldown" data-repeat aria-label="Baisser le volume"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+    </div>
+    <button class="round star" data-k="fav" aria-label="Épingler l'élément sélectionné"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></svg></button>
+    <button class="round" data-k="ok" aria-label="Valider">OK</button>
+  </div>
+</section>
+
+<!-- ================= Recherche ================= -->
+<section class="view" id="v-search" hidden>
+  <header class="bar"><div><p class="eyebrow">Films, séries, YouTube, apps</p><h1>Recherche</h1></div></header>
+  <form id="findForm" class="search" autocomplete="off">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="findInput" type="search" enterkeyhint="search" placeholder="Lupin, Bluey, une chaîne YouTube…" aria-label="Rechercher">
+  </form>
+  <div id="findResults" class="results"></div>
+  <p class="hint" id="findHint" hidden>Touche un résultat pour le regarder sur la TV, voir la bande-annonce ou l'ajouter aux favoris.</p>
+  <!-- À regarder : idées sur les plateformes installées, quand la recherche est vide -->
+  <div id="discover" class="discover"></div>
+</section>
+
+<!-- ================= Réglages ================= -->
+<section class="view" id="v-settings" hidden>
+  <header class="bar"><div><p class="eyebrow">Launcher</p><h1>Réglages</h1></div></header>
+  <nav class="menu">
+    <button data-page="pins"><span class="ico warm"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></svg></span><span class="lbl">Favoris<small id="mPins"></small></span><i></i></button>
+    <button data-page="kids"><span class="ico"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></span><span class="lbl">Enfants<small id="mKids"></small></span><i></i></button>
+  </nav>
+  <nav class="menu">
+    <button data-page="home"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M7 21h10M7 9h4M7 12h7"/></svg></span><span class="lbl">Écran d'accueil<small>Éléments, agenda, notes</small></span><i></i></button>
+    <button data-page="look"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></span><span class="lbl">Apparence<small>Thème et fond d'écran</small></span><i></i></button>
+    <button data-page="apps"><span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></span><span class="lbl">Apps<small>Ordre, noms</small></span><i></i></button>
+  </nav>
+  <nav class="menu">
+    <button data-page="keys"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l3 3M14 9l2 2"/></svg></span><span class="lbl">Clés API<small id="mKeys"></small></span><i></i></button>
+  </nav>
+</section>
+
+<!-- ---------- Réglages > Clés API ---------- -->
+<section class="view page" id="p-keys" hidden>
+  <button class="back" data-back>Réglages</button>
+  <h1>Clés API</h1>
+  <p class="hint">Des clés gratuites qui permettent à la TV de chercher les films, les vidéos YouTube et les photos. Elles restent sur ta TV, jamais ailleurs.</p>
+  <div id="keysList"></div>
+  <button class="ghost wide" id="onbAgain">Revoir le guide de démarrage</button>
+</section>
+
+<!-- ---------- Réglages > Favoris ---------- -->
+<section class="view page" id="p-pins" hidden>
+  <button class="back" data-back>Réglages</button>
+  <h1>Favoris</h1>
+  <p class="hint">Ils s'affichent dans la rangée À suivre de la TV. Ajoute-en depuis l'onglet Recherche, ou colle un lien.</p>
+  <div id="pinList" class="list"></div>
+  <form id="pinForm" class="card form">
+    <label for="link">Coller un lien</label>
+    <input id="link" type="url" inputmode="url" placeholder="https://www.netflix.com/title/…" required>
+    <input id="title" type="text" placeholder="Titre (facultatif)">
+    <button class="primary">Ajouter</button>
+    <p class="fine">Netflix, Disney+, Prime Video, HBO Max, Crunchyroll, Auvio, Arte, YouTube. Pratique pour une section précise d'une app.</p>
+  </form>
+</section>
+
+<!-- ---------- Réglages > Enfants ---------- -->
+<section class="view page" id="p-kids" hidden>
+  <button class="back" data-back>Réglages</button>
+  <h1>Enfants</h1>
+  <div class="card status-card" id="kidsStatus"></div>
+  <div class="card" id="defisCard">
+    <label class="switch-row">
+      <span><strong>Défis pendant les dessins animés</strong><small id="defisNote">La TV fait une pause et pose une petite question. On répond avec la télécommande.</small></span>
+      <input type="checkbox" id="defisOn" class="switch">
+    </label>
+    <div id="defisBox" hidden>
+      <p class="fine sub-label">Un défi toutes les</p>
+      <div class="num-row">
+        <div class="segmented inline" id="defisEvery">
+          <button data-v="10">10</button><button data-v="20">20</button><button data-v="30">30</button><button data-v="45">45</button><button data-v="60">60</button>
+        </div>
+        <label class="num-field"><input id="defisEveryIn" type="number" inputmode="numeric" min="1" max="240" aria-label="Minutes entre deux défis"><span>min</span></label>
+      </div>
+      <p class="fine sub-label">Questions par défi</p>
+      <div class="num-row">
+        <div class="segmented inline" id="defisCount">
+          <button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="5">5</button>
+        </div>
+        <label class="num-field"><input id="defisCountIn" type="number" inputmode="numeric" min="1" max="10" aria-label="Nombre de questions"><span>questions</span></label>
+      </div>
+      <p class="fine sub-label">Niveau</p>
+      <div class="segmented inline" id="defisLevel">
+        <button data-v="6">6 ans</button><button data-v="8">8 ans</button><button data-v="mix">Les deux</button>
+      </div>
+      <div id="defisBig">
+        <p class="fine sub-label">Calculs du niveau 8 ans (jusqu'à 100)</p>
+        <div class="op-row" id="defisOps"></div>
+        <p class="fine">Toutes les réponses se tapent avec les chiffres de la télécommande (ou le pavé à l'écran). Pas de réponse à choisir.</p>
+      </div>
+      <p class="fine sub-label">Types de questions</p>
+      <div class="list" id="defisTypes"></div>
+      <div class="btn-row">
+        <button class="ghost" id="defisNow">Lancer un défi maintenant</button>
+        <button class="ghost" id="defisSkip" hidden>Passer le défi en cours</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Éteindre dans…</h2>
+    <div class="chips" id="sleepChips">
+      <button data-min="15">15 min</button><button data-min="30">30 min</button><button data-min="45">45 min</button>
+      <button data-min="60">1 h</button><button data-min="90">1 h 30</button><button data-min="120">2 h</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Éteindre à une heure précise</h2>
+    <div class="time-row">
+      <input id="sleepTime" type="time" value="20:30" aria-label="Heure d'extinction">
+      <button class="primary small" id="sleepAtBtn">Programmer</button>
+    </div>
+    <label class="switch-row"><span>Tous les jours</span><input type="checkbox" id="sleepDaily" class="switch"></label>
+  </div>
+  <div class="card">
+    <label class="switch-row">
+      <span><strong>À la fin du contenu en cours</strong><small id="endNote">La TV s'éteint quand l'épisode ou le film se termine.</small></span>
+      <input type="checkbox" id="sleepEnd" class="switch">
+    </label>
+  </div>
+  <div class="card">
+    <label class="switch-row">
+      <span><strong>Code au rallumage</strong><small>Après une extinction programmée, la TV demande un code à 4 chiffres.</small></span>
+      <input type="checkbox" id="lockOn" class="switch">
+    </label>
+    <div id="codeBox" class="code-box" hidden>
+      <p class="fine">Ton code</p>
+      <p class="code" id="codeValue">••••</p>
+      <div class="btn-row">
+        <button class="ghost" id="newCodeBtn">Nouveau code</button>
+        <button class="ghost" id="lockNowBtn">Verrouiller maintenant</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- Réglages > Écran d'accueil ---------- -->
+<section class="view page" id="p-home" hidden>
+  <button class="back" data-back>Réglages</button>
+  <h1>Écran d'accueil</h1>
+  <div class="card"><h2>Afficher</h2><div id="widgetList"></div></div>
+  <div class="card">
+    <h2>Bandes-annonces</h2>
+    <div class="segmented inline" id="voSeg">
+      <button data-vo="1">Version originale</button><button data-vo="0">En français</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Agenda</h2>
+    <div class="segmented inline" id="daysSeg">
+      <button data-days="1">Aujourd'hui</button><button data-days="3">3 jours</button><button data-days="7">7 jours</button>
+    </div>
+    <div id="calList" class="cal-list"></div>
+    <form id="calForm" class="form cal-form">
+      <input id="calName" type="text" placeholder="Nom (ex. Famille)">
+      <input id="calUrl" type="url" inputmode="url" placeholder="Lien iCal (https://… ou webcal://…)" required>
+      <button class="primary">Ajouter l'agenda</button>
+    </form>
+    <details class="help">
+      <summary>Où trouver le lien iCal ?</summary>
+      <p><b>Google Agenda</b> : sur ordinateur, Paramètres de l'agenda, puis « Adresse secrète au format iCal ».</p>
+      <p><b>iCloud</b> : dans Calendrier sur iPhone, touche ⓘ à côté de l'agenda, active « Calendrier public » et copie le lien.</p>
+    </details>
+  </div>
+  <div class="card">
+    <h2>Notes</h2>
+    <div id="noteList"></div>
+    <button class="ghost wide-btn" id="addNote">Ajouter une note</button>
+  </div>
+</section>
+
+<!-- ---------- Réglages > Apparence ---------- -->
+<section class="view page" id="p-look" hidden>
+  <button class="back" data-back>Réglages</button>
+  <h1>Apparence</h1>
+  <div class="card">
+    <h2>Thème</h2>
+    <div class="segmented inline" id="themeSeg">
+      <button data-theme="auto">Auto</button><button data-theme="clair">Clair</button><button data-theme="sombre">Sombre</button>
+    </div>
+    <p class="fine">Auto suit le lever et le coucher du soleil.</p>
+  </div>
+  <div class="card">
+    <h2>Fond d'écran</h2>
+    <div class="wp-grid" id="wpGrid"></div>
+    <label class="pick">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>
+      Choisir une de mes photos
+      <input id="file" type="file" accept="image/*" hidden>
+    </label>
+  </div>
+  <div class="card">
+    <h2>Photos Unsplash</h2>
+    <div id="unsplashOff" class="fine" hidden>Ajoute ta clé « Access Key » dans secrets.properties (UNSPLASH_KEY=…), puis relance l'installation.</div>
+    <form id="unsplashForm" class="search small-search" autocomplete="off">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="uq" type="search" enterkeyhint="search" placeholder="Montagne, forêt, Bruxelles…" aria-label="Rechercher une photo">
+    </form>
+    <div class="ugrid" id="ugrid"></div>
+    <p class="fine" id="creditNow"></p>
+  </div>
+  <div class="card" id="editor" hidden>
+    <h2>Cadrer la photo</h2>
+    <canvas id="cv" width="960" height="540"></canvas>
+    <p class="fine">Fais glisser la photo. Les repères montrent où s'affichent les infos sur la TV.</p>
+    <label class="range-row">Zoom<input id="zoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+    <label class="range-row">Voile <output id="dimv">25 %</output><input id="dim" type="range" min="0" max="70" step="5" value="25"></label>
+    <label class="switch-row"><span>Afficher les repères</span><input type="checkbox" id="guides" class="switch" checked></label>
+    <button class="primary" id="sendPhoto">Mettre en fond d'écran</button>
+  </div>
+</section>
+
+<!-- ---------- Réglages > Apps ---------- -->
+<section class="view page" id="p-apps" hidden>
+  <button class="back" data-back>Réglages</button>
+  <h1>Apps</h1>
+  <p class="hint">Fais glisser <span class="grip-inline">⠿</span> pour changer l'ordre. Touche un nom pour le renommer.</p>
+  <div class="list" id="menuList"></div>
+  <h2 class="pad-x">Masquées</h2>
+  <div class="list" id="otherList"></div>
+  <button class="ghost wide" id="scFromApps">Raccourcis de la télécommande</button>
+</section>
+
+<!-- ================= Feuilles ================= -->
+<div class="scrim" id="scrim" hidden></div>
+
+<div class="sheet" id="timerSheet" hidden role="dialog" aria-label="Minuteur">
+  <div class="grabber"></div>
+  <h2 class="sheet-title">Minuteur sur la TV</h2>
+  <div class="timer-now" id="timerNow" hidden>
+    <p class="big" id="timerLeft">0:00</p>
+    <button class="ghost" id="timerStop">Arrêter</button>
+  </div>
+  <div class="chips" id="timerChips">
+    <button data-sec="60">1 min</button><button data-sec="180">3 min</button><button data-sec="300">5 min</button>
+    <button data-sec="600">10 min</button><button data-sec="900">15 min</button><button data-sec="1800">30 min</button>
+  </div>
+  <div class="time-row timer-custom">
+    <input id="timerMin" type="number" inputmode="numeric" min="1" max="360" placeholder="Minutes" aria-label="Durée en minutes">
+    <input id="timerLabel" type="text" placeholder="Nom (ex. Pâtes)" aria-label="Nom du minuteur">
+    <button class="primary small" id="timerGo">Lancer</button>
+  </div>
+</div>
+
+<div class="sheet" id="appsSheet" hidden role="dialog" aria-label="Raccourcis">
+  <div class="grabber"></div>
+  <h2 class="sheet-title">Raccourcis de la télécommande</h2>
+  <p class="fine">Coche les apps à ouvrir d'une touche. Elles apparaissent dans l'ordre où tu les coches.</p>
+  <div class="list" id="appsPick"></div>
+</div>
+
+<div class="sheet" id="itemSheet" hidden role="dialog" aria-label="Résultat">
+  <div class="grabber"></div>
+  <div class="item-head">
+    <img id="isImg" alt="">
+    <div><h2 id="isTitle"></h2><p id="isSub"></p><div class="rating" id="isRating"></div></div>
+  </div>
+  <p class="item-text" id="isText"></p>
+  <div class="actions" id="isActions"></div>
+</div>
+
+<!-- ================= Cartes à swiper (À regarder) ================= -->
+<div class="deck" id="deck" hidden role="dialog" aria-label="Idées à regarder">
+  <div class="deck-top">
+    <span class="deck-count" id="deckCount"></span>
+    <button class="deck-close" id="deckClose" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="deck-stack" id="deckStack"></div>
+  <div class="deck-main">
+    <button class="dbtn no" data-t="no" aria-label="Pas intéressé"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="dbtn play" data-t="watch" aria-label="Regarder sur la TV"><svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" class="fill"/></svg></button>
+    <button class="dbtn fav" data-t="pin" aria-label="Ajouter aux favoris de la TV"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" class="fill"/></svg></button>
+    <button class="dbtn yes" data-t="want" aria-label="Ça me tente"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" class="fill"/></svg></button>
+  </div>
+  <div class="deck-more">
+    <button data-t="seen">👀 Déjà vu</button>
+    <button data-t="liked">😍 J'ai adoré</button>
+    <button data-t="nogenre">🙅 Pas ce genre</button>
+    <button data-t="trailer">🎬 Bande-annonce</button>
+  </div>
+</div>
+
+<!-- ================= Guide de démarrage (clés API) ================= -->
+<div class="onb" id="onb" hidden role="dialog" aria-label="Guide de démarrage">
+  <div class="onb-top"><span class="onb-dots" id="onbDots"></span><button class="linkish" id="onbSkip">Plus tard</button></div>
+  <div class="onb-body" id="onbBody"></div>
+  <div class="onb-nav"><button class="ghost" id="onbPrev">Retour</button><button class="primary" id="onbNext">Suivant</button></div>
+</div>
+
+<!-- ================= Barre d'onglets ================= -->
+<nav class="tabbar" aria-label="Sections">
+  <button data-tab="remote" class="on">
+    <svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="5"/><circle cx="12" cy="8.5" r="2"/><path d="M12 14v.01M12 17v.01"/></svg>
+    <span>Télécommande</span>
+  </button>
+  <button data-tab="search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <span>Recherche</span>
+  </button>
+  <button data-tab="settings">
+    <svg viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+    <span>Réglages</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/app.js"></script>
+</body>
+</html>
