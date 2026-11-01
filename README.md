@@ -44,6 +44,8 @@ L'histoire du projet : [J'ai codé l'accueil de ma TV… sans savoir coder](http
 <img src="docs/images/tel-telecommande.jpg" width="240" alt="La télécommande sur le téléphone">
 <img src="docs/images/tel-a-regarder.jpg" width="240" alt="À regarder : nouveautés, films à revoir, cinéma coréen">
 <img src="docs/images/tel-cartes.jpg" width="240" alt="Les cartes à swiper">
+<img src="docs/images/tel-defis.jpg" width="240" alt="Les réglages des défis">
+<img src="docs/images/tel-cles.jpg" width="240" alt="La page Clés API, avec un bouton Tester">
 </p>
 
 <sub>Captures en mode démo (faux agenda). Photo de fond : Sebastian Unrau sur <a href="https://unsplash.com">Unsplash</a>.</sub>
