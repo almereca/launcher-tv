@@ -64,9 +64,10 @@ L'histoire du projet : [J'ai codé l'accueil de ma TV… sans savoir coder](http
 
 1. Sur la TV : Paramètres > Préférences de l'appareil > À propos, appuie 7 fois sur « Build »,
    puis active le **débogage USB** (il sert à la télécommande du téléphone).
-2. Installe l'app gratuite **Send Files to TV** sur la TV et sur ton téléphone.
-3. Sur le téléphone, télécharge [launcher-tv.apk](https://github.com/almereca/launcher-tv/releases/latest/download/launcher-tv.apk) (sans clé), et envoie-le à la TV avec Send Files to TV.
-4. Sur la TV, ouvre le fichier et installe-le (autorise Send Files to TV à installer des apps quand la TV le demande).
+2. Télécharge [launcher-tv.apk](https://github.com/almereca/launcher-tv/releases/latest/download/launcher-tv.apk) (sans clé) et copie-le sur une clé USB.
+3. Installe l'app gratuite **X-plore** sur la TV (le lecteur USB intégré n'ouvre pas les applis).
+4. Branche la clé, ouvre le fichier avec X-plore et installe-le (autorise X-plore à installer des apps quand la TV le demande).
+   Sans clé USB : l'app **Send Files to TV**, sur la TV et le téléphone, envoie le fichier sans fil.
 5. Paramètres > Préférences de l'appareil > **Accessibilité** : active « Launcher » (c'est ce qui redirige le bouton Accueil).
 6. Paramètres > Applications > Accès spécial aux applications > **Superposition** : active « Launcher » (pour le minuteur).
 7. Sur la TV, choisis « Connecter un téléphone », scanne le QR code, et colle tes clés.
