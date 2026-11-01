@@ -4,6 +4,8 @@ Un accueil épuré pour les TV et boîtiers **Android TV / Google TV**, codé en
 Sans pub, avec une recherche qui fouille toutes les plateformes disponibles en Belgique,
 l'agenda familial et une app sur le téléphone qui sert de télécommande.
 
+![L'accueil sur la TV : la colonne d'apps, À suivre, l'agenda et la météo](docs/images/accueil.jpg)
+
 L'histoire du projet : [J'ai codé l'accueil de ma TV… sans savoir coder](https://www.entrelasoupeetlespatates.com/launcher-android-tv-sans-pub/) (Entre la soupe et les patates).
 
 > Projet personnel, testé sur une Philips 55OLED855 (Android TV 9). Il devrait marcher sur la plupart des
@@ -24,6 +26,27 @@ L'histoire du projet : [J'ai codé l'accueil de ma TV… sans savoir coder](http
 - **Recherche unifiée** : films, séries (et sur quelle plateforme ils sont disponibles en Belgique), YouTube, apps.
 - **À regarder** : nouveautés, films à revoir, séries à rattraper, cinéma coréen, à voir en famille, avec l'âge et les contenus signalés. Cartes à swiper pour affiner les suggestions.
 - Réglages : favoris, enfants, écran d'accueil, apparence, apps, clés API.
+
+## En images
+
+| | |
+|---|---|
+| ![Recherche sur la TV](docs/images/recherche-tv.jpg) | ![Réglages, avec l'accès aux réglages d'Android](docs/images/reglages-android.jpg) |
+| Une recherche, toutes les plateformes belges | Les réglages, et un raccourci vers ceux d'Android |
+| ![Minuteur discret en haut de l'écran](docs/images/minuteur.jpg) | ![Fin du minuteur](docs/images/c-est-l-heure.jpg) |
+| Le minuteur reste discret, en haut | Et prévient quand c'est l'heure, sans prendre tout l'écran |
+| ![Défi de calcul](docs/images/defi-calcul.jpg) | ![Défi de néerlandais](docs/images/defi-neerlandais.jpg) |
+| Défi de calcul, réponse avec les chiffres de la télécommande | Défi de néerlandais, lettre par lettre |
+
+**Sur le téléphone**
+
+<p>
+<img src="docs/images/tel-telecommande.jpg" width="240" alt="La télécommande sur le téléphone">
+<img src="docs/images/tel-a-regarder.jpg" width="240" alt="À regarder : nouveautés, films à revoir, cinéma coréen">
+<img src="docs/images/tel-cartes.jpg" width="240" alt="Les cartes à swiper">
+</p>
+
+<sub>Captures en mode démo (faux agenda). Photo de fond : Sebastian Unrau sur <a href="https://unsplash.com">Unsplash</a>.</sub>
 
 ## Installation (Mac)
 
